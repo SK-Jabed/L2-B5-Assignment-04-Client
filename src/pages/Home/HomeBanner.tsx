@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import image1 from "../../../assets/book-1.jpg";
-import image2 from "../../../assets/book-2.jpg";
+import image1 from "../../assets/book-1.jpg";
+import image2 from "../../assets/book-2.jpg";
 import { Link } from "react-router";
 
 const HomeBanner = () => {
