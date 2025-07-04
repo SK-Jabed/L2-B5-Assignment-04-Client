@@ -65,7 +65,7 @@ const AllBooks = () => {
     });
   };
 
-  // borrow handler
+  // Borrow Handler
   const onSubmit = async (data: TBorrow) => {
     if (!borrowId) return;
 
