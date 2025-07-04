@@ -1,5 +1,5 @@
 import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
-import { useCreateBookMutation } from "@/redux/Api/baseApi";
+import { useCreateBookMutation } from "@/redux/api/baseApi";
 import { useForm } from "react-hook-form";
 import { FaBook } from "react-icons/fa";
 import { useNavigate } from "react-router";
