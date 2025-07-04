@@ -2,7 +2,7 @@
 import {
   useGetBookByIdQuery,
   useDeleteBookMutation,
-} from "../../../Redux/Api/baseApi";
+} from "@/redux/Api/baseApi";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FaBookOpen } from "react-icons/fa";

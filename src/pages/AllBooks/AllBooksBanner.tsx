@@ -1,4 +1,5 @@
 import image from "../../../assets/book-1.jpg";
+
 const AllBooksBanner = () => {
   return (
     <div

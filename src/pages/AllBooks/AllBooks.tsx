@@ -4,16 +4,16 @@ import {
   useBorrowBookMutation,
   useDeleteBookMutation,
   useGetBooksQuery,
-} from "../../../Redux/Api/baseApi";
+} from "@/redux/Api/baseApi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import type { IBook, TBorrow } from "../../../Types/book.type";
-import Swal from "sweetalert2";
+import type { IBook, TBorrow } from "../../types/book.type";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import UpdateBookModal from "./UpdateBookModal";
 import AllBooksBanner from "./AllBooksBanner";
-import NewsletterSection from "../../Shared/NewsletterSection/NewsletterSection";
+import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
+import Swal from "sweetalert2";
 
 const AllBooks = () => {
   const { data, isLoading } = useGetBooksQuery(undefined);

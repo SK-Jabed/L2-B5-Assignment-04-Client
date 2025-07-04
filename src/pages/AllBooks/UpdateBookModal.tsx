@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import type { IBook } from "../../../Types/book.type";
+import type { IBook } from "../../types/book.type";
 import { useEffect } from "react";
-import { useUpdateBookMutation } from "../../../Redux/Api/baseApi";
+import { useUpdateBookMutation } from "@/redux/Api/baseApi";
 import Swal from "sweetalert2";
 
 const UpdateBookModal = ({ bookData }: { bookData: IBook | null }) => {
