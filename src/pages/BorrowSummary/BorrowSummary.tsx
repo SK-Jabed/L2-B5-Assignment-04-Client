@@ -1,5 +1,5 @@
-import { useGetBorrowQuery } from "@/redux/Api/baseApi";
 import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
+import { useGetBorrowQuery } from "@/redux/Api/baseApi";
 import BorrowSummaryBanner from "./BorrowSummaryBanner";
 
 interface IBorrow {

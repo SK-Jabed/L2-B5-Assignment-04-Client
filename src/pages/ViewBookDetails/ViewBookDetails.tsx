@@ -1,18 +1,18 @@
 // import { useParams, useNavigate } from "react-router-dom";
 import {
-  useGetBookByIdQuery,
   useDeleteBookMutation,
+  useGetBookByIdQuery,
 } from "@/redux/Api/baseApi";
+import { FaBookOpen } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { FaBookOpen } from "react-icons/fa";
-import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
+import Swal from "sweetalert2";
 
 const ViewBookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const { data, isLoading } = useGetBookByIdQuery(id as string);
   const [deleteBook] = useDeleteBookMutation();
 
