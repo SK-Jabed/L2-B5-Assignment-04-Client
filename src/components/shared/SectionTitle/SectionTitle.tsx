@@ -1,6 +1,7 @@
 type SectionTitleProps = {
   title: string;
 };
+
 const SectionTitle = ({ title }: SectionTitleProps) => {
   return (
     <div>

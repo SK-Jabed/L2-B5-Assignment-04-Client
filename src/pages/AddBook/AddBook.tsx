@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useCreateBookMutation } from "../../../Redux/Api/baseApi";
+import { useCreateBookMutation } from "@/redux/Api/baseApi";
 import AddBookBanner from "./AddBookBanner";
 import { FaBook } from "react-icons/fa";
-import NewsletterSection from "../../Shared/NewsletterSection/NewsletterSection";
-import Swal from "sweetalert2";
+import NewsletterSection from "@/components/shared/NewsletterSection/NewsletterSection";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 type TBook = {
   title: string;
