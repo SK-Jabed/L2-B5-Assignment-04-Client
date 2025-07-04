@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router";
 const ViewBookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  
   const { data, isLoading } = useGetBookByIdQuery(id as string);
   const [deleteBook] = useDeleteBookMutation();
 

@@ -21,6 +21,7 @@ const BooksCard = () => {
   const [createBorrow] = useBorrowBookMutation();
   const [borrowId, setBorrowId] = useState<string>();
   const [borrowCopies, setborrowCopies] = useState<number>(0);
+
   const { register, handleSubmit } = useForm<TBorrow>();
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const BooksCard = () => {
   console.log(data?.data);
   console.log(borrowId);
 
-  // delete book handler
+  // Delete book handler
   const deleteHandler = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
