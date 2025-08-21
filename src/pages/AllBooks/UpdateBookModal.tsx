@@ -5,152 +5,152 @@ import Swal from "sweetalert2";
 import type { IBook } from "../../types/book.type";
 
 const UpdateBookModal = ({ bookData }: { bookData: IBook | null }) => {
-  const { register, handleSubmit, reset } = useForm<IBook>();
-  const [updateBook, { isLoading, isSuccess, error }] = useUpdateBookMutation();
+  const { register, handleSubmit, reset, watch } = useForm<IBook>();
+  const [updateBook, { isSuccess, error }] = useUpdateBookMutation();
 
-  // Reset form values when bookData changes
+  // Watch copies to update availability
+  const copies = watch("copies");
+
+  // Reset form when data changes
   useEffect(() => {
-    if (bookData) reset(bookData);
+    if (bookData) {
+      reset(bookData);
+    }
   }, [bookData, reset]);
 
-  // Log status
+  // Log update status
   useEffect(() => {
     if (isSuccess) console.log("Update successful");
     if (error) console.error("Update failed:", error);
   }, [isSuccess, error]);
 
-  // update book handler
+  // Submit Handler
   const onSubmit = async (data: IBook) => {
-    try {
-      // Build payload with available: true only when copies > 0
-      const updatedData: IBook = {
-        ...data,
-        ...(Number(data.copies) > 0 && { available: true }),
-      };
+    const updatedData: IBook = {
+      ...data,
+      copies: Number(data.copies),
+      available: Number(data.copies) > 0,
+    };
 
+    try {
       const res = await updateBook(updatedData).unwrap();
       console.log("Book updated:", res);
 
-      // ✅ Close modal
-      const modal = document.getElementById(
-        "my_modal_1"
-      ) as HTMLDialogElement | null;
+      const modal = document.getElementById("my_modal_1") as HTMLDialogElement;
       modal?.close();
 
-      // ✅ Show success alert
       Swal.fire({
         icon: "success",
         title: "Book Updated!",
         text: "The book details have been successfully updated.",
       });
-    } catch (err: unknown) {
-      console.error("Update failed:", err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const message = err?.data?.errors
+        ? Object.values(err.data.errors)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .map((e: any) => e.message)
+            .join(", ")
+        : err?.data?.message || "Something went wrong.";
 
-      if (
-        typeof err === "object" &&
-        err !== null &&
-        "data" in err &&
-        "status" in err
-      ) {
-        const error = err as {
-          status: number;
-          data: {
-            message?: string;
-            errors?: Record<string, { message: string }>;
-          };
-        };
-
-        const errorMessages = error.data?.errors
-          ? Object.values(error.data.errors)
-              .map((e) => e.message)
-              .join(", ")
-          : error.data?.message ||
-            "Something went wrong while updating the book.";
-
-        Swal.fire({
-          icon: "error",
-          title: "Update Failed",
-          text: errorMessages,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Unexpected Error",
-          text: "An unknown error occurred. Please try again.",
-        });
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: message,
+      });
     }
   };
 
-  if (!bookData) return null; // ✅ Don't render if no book selected
+  if (!bookData) return null;
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-[60vh]">
-        <span className="loading loading-bars loading-xl text-[#1BBC9B]"></span>
-      </div>
-    );
-  }
   return (
     <dialog id="my_modal_1" className="modal">
-      <div className="modal-box">
-        <h3 className="font-bold text-lg">Edit Book</h3>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto w-full max-w-2xl"
-        >
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Title</legend>
+      <div className="modal-box max-w-2xl w-full">
+        <h3 className="text-2xl font-semibold text-[#1BBC9B] mb-6">
+          Update Book Details
+        </h3>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Title */}
+          <div>
+            <label className="label">Title</label>
             <input
-              {...register("title")}
-              required
+              {...register("title", { required: "Title is required" })}
               type="text"
-              className="input w-full"
-              placeholder="Type here"
+              className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+              placeholder="Book title"
             />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Description</legend>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="label">Description</label>
             <textarea
-              {...register("description")}
-              required
-              className="input w-full"
-              placeholder="Type here"
-            />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Author</legend>
+              {...register("description", {
+                required: "Description is required",
+              })}
+              className="textarea textarea-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+              placeholder="Brief summary of the book"
+            ></textarea>
+          </div>
+
+          {/* Author */}
+          <div>
+            <label className="label">Author</label>
             <input
-              {...register("author")}
-              required
+              {...register("author", { required: "Author name is required" })}
               type="text"
-              className="input w-full"
-              placeholder="Type here"
+              className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+              placeholder="Author's name"
             />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">ISBN</legend>
+          </div>
+
+          {/* ISBN */}
+          <div>
+            <label className="label">ISBN</label>
             <input
-              {...register("isbn")}
-              required
+              {...register("isbn", {
+                required: "ISBN is required",
+                pattern: {
+                  value: /^[\d-]+$/,
+                  message: "Invalid ISBN format",
+                },
+              })}
               type="text"
-              className="input w-full"
-              placeholder="Type here"
+              className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+              placeholder="ISBN number"
             />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Copies</legend>
+          </div>
+
+          {/* Copies */}
+          <div>
+            <label className="label">Number of Copies</label>
             <input
-              {...register("copies")}
-              required
+              {...register("copies", {
+                required: "Number of copies is required",
+                valueAsNumber: true,
+                min: {
+                  value: 0,
+                  message: "Copies cannot be negative",
+                },
+              })}
               type="number"
-              className="input w-full"
-              placeholder="Type here"
+              className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+              placeholder="How many copies?"
             />
-          </fieldset>
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend">Genre</legend>
-            <select {...register("genre")} required className="select w-full">
+            <p className="text-sm text-gray-500 mt-1">
+              Availability will be set to{" "}
+              {Number(copies) > 0 ? `"Available"` : `"Unavailable"`}
+            </p>
+          </div>
+
+          {/* Genre */}
+          <div>
+            <label className="label">Genre</label>
+            <select
+              {...register("genre", { required: "Genre is required" })}
+              className="select select-bordered w-full focus:outline-none focus:ring-2 focus:ring-[#1BBC9B]"
+            >
               <option value="FICTION">Fiction</option>
               <option value="NON_FICTION">Non Fiction</option>
               <option value="SCIENCE">Science</option>
@@ -158,11 +158,18 @@ const UpdateBookModal = ({ bookData }: { bookData: IBook | null }) => {
               <option value="BIOGRAPHY">Biography</option>
               <option value="FANTASY">Fantasy</option>
             </select>
-          </fieldset>
-          <button className="btn bg-[#1BBC9B] hover:bg-[#16A086] text-white w-full mt-4">
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="btn w-full bg-[#1BBC9B] hover:bg-[#16A086] text-white text-lg"
+          >
             Update Book
           </button>
         </form>
+
+        {/* Modal Footer */}
         <div className="modal-action">
           <form method="dialog">
             <button className="btn bg-red-600 text-white">Close</button>

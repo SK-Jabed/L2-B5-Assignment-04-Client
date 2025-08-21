@@ -4,13 +4,14 @@ import AllBooks from "@/pages/AllBooks/AllBooks";
 import BorrowSummary from "@/pages/BorrowSummary/BorrowSummary";
 import Home from "@/pages/Home/Home";
 import ViewBookDetails from "@/pages/ViewBookDetails/ViewBookDetails";
+import ErrorPage from "@/components/shared/ErrorPage/ErrorPage";
 import { createBrowserRouter } from "react-router";
-
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

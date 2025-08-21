@@ -1,38 +1,43 @@
-import { FaPaperPlane } from "react-icons/fa";
+"use client";
 
-const NewsletterSection = () => {
+import { motion } from "framer-motion";
+import "aos/dist/aos.css";
+
+const CTASection = () => {
   return (
-    <section className="bg-[#16A086] py-20 px-4 text-white text-center mt-20">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-semibold mb-4 font-serif">
-          Stay in Touch with Our Updates
-        </h2>
-        <div className="h-1 w-10 mx-auto bg-white/50 mb-6"></div>
+    <div
+      className="relative py-20 text-white text-center bg-cover bg-center  rounded-xl"
+      style={{ backgroundImage: "url('/bg-images/cta-bg.jpg')" }}
+    >
+      <div className="absolute"></div>
+      <div className="relative z-10">
+        {/* Title */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-4xl md:text-5xl font-bold"
+        >
+          Unlock the Power of Learning
+        </motion.h2>
 
-        <form className="flex flex-col md:flex-row items-center justify-center gap-4">
-          <input
-            type="email"
-            placeholder="Enter Your Email Address"
-            className="input input-bordered w-full md:w-96 text-black"
-          />
-          <button className="btn bg-black text-white hover:bg-gray-800 flex items-center gap-2">
-            <FaPaperPlane />
-            GET IN TOUCH
-          </button>
-        </form>
+        {/* Description */}
+        <p className="text-base md:text-lg mt-3 text-gray-300">
+          Join AI Scholar and empower your learning journey with AI-driven
+          insights.
+        </p>
 
-        <div className="flex items-center justify-center gap-2 mt-4 text-sm">
-          <input type="checkbox" className="checkbox checkbox-xs" />
-          <span>
-            I agree to the{" "}
-            <a href="#" className="underline">
-              Privacy Policy
-            </a>
-          </span>
-        </div>
+        {/* Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+          className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-xl transition-all duration-300"
+        >
+          Get Started
+        </motion.button>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default NewsletterSection;
+export default CTASection;
